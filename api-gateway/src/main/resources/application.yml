@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: api-gateway
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8081/realms/ecommerce
+
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+
+            - id: payment-service
+              uri: lb://payment-service
+              predicates:
+                - Path=/api/payments/**
+
+            - id: order-service
+              uri: lb://order-service
+              predicates:
+                - Path=/orders/**
+
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/

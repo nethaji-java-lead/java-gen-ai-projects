@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c8b2d19c-c42b-47bf-a14f-51b054c6119d" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;famitha-tech&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/nethaji-java-lead/java-projects.git",
+    "accountId": "a4e9674d-bca0-4c53-8f52-872b3ee489b3"
+  }
+}]]></component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0" />
+      <entry key="S5" value="1.0000000000000002" />
+      <entry key="S10" value="1.0000000174912467" />
+      <entry key="S30" value="1.0026424270175793" />
+      <entry key="S60" value="1.0577956432177962" />
+      <entry key="M2" value="1.312692083502872" />
+      <entry key="M5" value="2.046475473603139" />
+      <entry key="M10" value="3.026829113033422" />
+      <entry key="M15" value="4.164474942499794" />
+      <entry key="M30" value="9.348240093364055" />
+      <entry key="H1" value="23.3492541411543" />
+      <entry key="H2" value="45.947368445912" />
+      <entry key="H4" value="73.03942842508697" />
+      <entry key="D1" value="124.61521641009857" />
+      <entry key="W1" value="139.29790994759094" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0020502831266535843" />
+      <entry key="MS500" value="0.325328490590293" />
+      <entry key="S2" value="1.1674399876045372" />
+      <entry key="S5" value="1.5994451133415355" />
+      <entry key="S10" value="1.786078666493721" />
+      <entry key="S30" value="1.925395950308981" />
+      <entry key="S60" value="1.9623002811091923" />
+      <entry key="M2" value="1.9867060846796898" />
+      <entry key="M5" value="2.145822337011707" />
+      <entry key="M10" value="2.9382070081936873" />
+      <entry key="M15" value="4.200322417393329" />
+      <entry key="M30" value="8.981647026864051" />
+      <entry key="H1" value="19.695400130591096" />
+      <entry key="H2" value="35.49668160192205" />
+      <entry key="H4" value="51.961230136645185" />
+      <entry key="D1" value="77.47651859049536" />
+      <entry key="W1" value="83.85638429777137" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.8293266642912448" />
+      <entry key="MS500" value="1.0569601130151762" />
+      <entry key="S2" value="1.6717543135135957" />
+      <entry key="S5" value="2.2249134519601443" />
+      <entry key="S10" value="2.549457818460856" />
+      <entry key="S30" value="2.8352289913171846" />
+      <entry key="S60" value="2.9710423687110246" />
+      <entry key="M2" value="3.272911017058289" />
+      <entry key="M5" value="4.179692943159662" />
+      <entry key="M10" value="5.955816574637248" />
+      <entry key="M15" value="8.355643097918964" />
+      <entry key="M30" value="18.318853871579062" />
+      <entry key="H1" value="43.030972487214456" />
+      <entry key="H2" value="81.43110240161111" />
+      <entry key="H4" value="124.99111099252168" />
+      <entry key="D1" value="202.08938786077064" />
+      <entry key="W1" value="223.15393271009862" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3JaYkPldGRqQbqMCkXA3WTUatQS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Docker.compose.yml.pgvector: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;Docker.compose.yml: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.SpringAiRagTutorialApplication.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.techie.springai.rag.service" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.SpringAiRagTutorialApplication">
+    <configuration name="SpringAiRagTutorialApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="gen-ai-rag-java-project" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.techie.springai.rag.SpringAiRagTutorialApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.techie.springai.rag.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="docker-deploy" factoryName="docker-compose.yml" temporary="true">
+      <deployment type="docker-compose.yml">
+        <settings />
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="compose.yml: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="sourceFilePath" value="compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <configuration name="compose.yml.pgvector: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
+      <deployment type="docker-compose.yml">
+        <settings>
+          <option name="services">
+            <list>
+              <option value="pgvector" />
+            </list>
+          </option>
+          <option name="sourceFilePath" value="compose.yml" />
+        </settings>
+      </deployment>
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.SpringAiRagTutorialApplication" />
+        <item itemvalue="Docker.compose.yml.pgvector: Compose Deployment" />
+        <item itemvalue="Docker.compose.yml: Compose Deployment" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-63390994e64e-intellij.indexing.shared.core-IU-262.8665.337" />
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.8665.337" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c8b2d19c-c42b-47bf-a14f-51b054c6119d" name="Changes" comment="" />
+      <created>1789900792802</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1789900792802</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

@@ -1,0 +1,43 @@
+
+  services:
+    postgres:
+      image: pgvector/pgvector:pg17
+      container_name: springai-postgres
+      restart: unless-stopped
+
+      environment:
+        POSTGRES_DB: springai
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+
+      ports:
+        - "5432:5432"
+
+      volumes:
+        - postgres_data:/var/lib/postgresql/data
+
+      healthcheck:
+        test: ["CMD-SHELL", "pg_isready -U postgres -d springai"]
+        interval: 5s
+        timeout: 5s
+        retries: 10
+
+    ollama:
+      image: ollama/ollama:latest
+      container_name: ollama
+      ports:
+        - "11434:11434"
+      volumes:
+        - ollama_data:/root/.ollama
+
+    sftp:
+      image: atmoz/sftp
+      ports:
+        - "2222:22"
+      volumes:
+        - ./upload:/home/foo/upload
+      command: foo:pass:1001
+
+  volumes:
+    postgres_data:
+    ollama_data:
