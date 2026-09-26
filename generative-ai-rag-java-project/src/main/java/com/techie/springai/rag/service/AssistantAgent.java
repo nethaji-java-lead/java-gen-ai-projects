@@ -1,6 +1,5 @@
 package com.techie.springai.rag.service;
 
-import com.techie.springai.rag.domain.ChatResponse;
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -16,5 +15,5 @@ public interface AssistantAgent {
              - Perform calculations.
              - Lookup for product information.
              - Always be concise and to the point.""")
-    String chat(@MemoryId Long userId, @UserMessage String question);
+    String chat(@UserMessage String question);
 }

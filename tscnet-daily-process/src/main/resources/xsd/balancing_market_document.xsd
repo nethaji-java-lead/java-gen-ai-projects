@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           targetNamespace="urn:iec62325.351:tc57wg16:451-6:balancingdocument:4:4"
+           xmlns:tns="urn:iec62325.351:tc57wg16:451-6:balancingdocument:4:4"
+           elementFormDefault="qualified">
+
+    <xs:element name="Balancing_MarketDocument" type="tns:BalancingMarketDocumentType"/>
+
+    <xs:complexType name="BalancingMarketDocumentType">
+        <xs:sequence>
+            <xs:element name="mRID" type="xs:string"/>
+            <xs:element name="revisionNumber" type="xs:int"/>
+            <xs:element name="type" type="xs:string"/>
+            <xs:element name="process.processType" type="xs:string"/>
+            <xs:element name="sender_MarketParticipant.mRID" type="tns:MarketParticipantType"/>
+            <xs:element name="sender_MarketParticipant.marketRole.type" type="xs:string"/>
+            <xs:element name="receiver_MarketParticipant.mRID" type="tns:MarketParticipantType"/>
+            <xs:element name="receiver_MarketParticipant.marketRole.type" type="xs:string"/>
+            <xs:element name="createdDateTime" type="xs:dateTime"/>
+            <xs:element name="area_Domain.mRID" type="tns:AreaDomainType"/>
+            <xs:element name="allocationDecision_DateAndOrTime.dateTime" type="xs:dateTime"/>
+            <xs:element name="period.timeInterval" type="tns:TimeIntervalType"/>
+            <xs:element name="TimeSeries" type="tns:TimeSeriesType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="MarketParticipantType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="codingScheme" type="xs:string" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="AreaDomainType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="codingScheme" type="xs:string" use="optional"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+
+    <xs:complexType name="TimeIntervalType">
+        <xs:sequence>
+            <xs:element name="start" type="xs:string"/>
+            <xs:element name="end" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="TimeSeriesType">
+        <xs:sequence>
+            <xs:element name="mRID" type="xs:string"/>
+            <xs:element name="businessType" type="xs:string"/>
+            <xs:element name="type_MarketAgreement.type" type="xs:string"/>
+            <xs:element name="original_MarketProduct.marketProductType" type="xs:string"/>
+            <xs:element name="mktPSRType.psrType" type="xs:string"/>
+            <xs:element name="flowDirection.direction" type="xs:string"/>
+            <xs:element name="currency_Unit.name" type="xs:string"/>
+            <xs:element name="quantity_Measure_Unit.name" type="xs:string"/>
+            <xs:element name="curveType" type="xs:string"/>
+            <xs:element name="Period" type="tns:PeriodType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PeriodType">
+        <xs:sequence>
+            <xs:element name="timeInterval" type="tns:TimeIntervalType"/>
+            <xs:element name="resolution" type="xs:string"/>
+            <xs:element name="Point" type="tns:PointType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="PointType">
+        <xs:sequence>
+            <xs:element name="position" type="xs:int"/>
+            <xs:element name="quantity" type="xs:decimal"/>
+            <xs:element name="procurement_Price.amount" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="imbalance_Price.category" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

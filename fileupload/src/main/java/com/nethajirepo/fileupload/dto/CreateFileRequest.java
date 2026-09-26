@@ -1,4 +1,9 @@
 package com.nethajirepo.fileupload.dto;
 
-public class CreateFileRequest {
+public record CreateFileRequest(
+        String fileName,
+        String contentType,
+        String targetPath,
+        Long fileSize
+) {
 }

@@ -1,7 +1,11 @@
 services:
-  daily-process:
-    build: .
+  sftp:
+    image: atmoz/sftp:latest
+    container_name: balancing-sftp
     ports:
-      - "8080:8080"
-    environment:
-      APP_SCHEDULER_ENABLED: "true"
+      - "2222:22"
+    volumes:
+      - ./sftp/upload:/home/testuser/filesToProcess
+      - ./sftp/archive:/home/testuser/archive
+      - ./sftp/error:/home/testuser/error
+    command: testuser:testpass:1001
