@@ -1,6 +1,6 @@
 package com.tscnet.dailyprocess.model;
 
 public enum InitiationType {
-    AUTOMATIC,
+    SCHEDULED,
     MANUAL
 }
