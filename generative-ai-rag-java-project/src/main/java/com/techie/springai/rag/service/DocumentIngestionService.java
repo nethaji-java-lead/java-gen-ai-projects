@@ -12,9 +12,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DocumentIngestionService  {
+public class DocumentIngestionService implements CommandLineRunner{
 
-    /*private static final Logger log = LoggerFactory.getLogger(DocumentIngestionService.class);
+    private static final Logger log = LoggerFactory.getLogger(DocumentIngestionService.class);
     @Value("classpath:/pdf/spring-boot-reference.pdf")
     private Resource resource;
     private final VectorStore vectorStore;
@@ -30,5 +30,5 @@ public class DocumentIngestionService  {
         log.info("Ingesting PDF file");
         vectorStore.accept(textSplitter.split(reader.read()));
         log.info("Completed Ingesting PDF file");
-    }*/
+    }
 }

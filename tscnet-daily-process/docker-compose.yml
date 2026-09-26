@@ -1,0 +1,7 @@
+services:
+  daily-process:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      APP_SCHEDULER_ENABLED: "true"
