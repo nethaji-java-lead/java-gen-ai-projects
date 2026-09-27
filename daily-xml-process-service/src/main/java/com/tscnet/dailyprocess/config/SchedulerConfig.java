@@ -1,0 +1,3 @@
+package com.tscnet.dailyprocess.config;
+import com.tscnet.dailyprocess.model.InitiationType; import com.tscnet.dailyprocess.service.ProcessService; import lombok.RequiredArgsConstructor; import lombok.extern.slf4j.Slf4j; import org.springframework.scheduling.annotation.Scheduled; import org.springframework.stereotype.Component; import java.time.*;
+@Component @RequiredArgsConstructor @Slf4j public class SchedulerConfig { private final ProcessService service; @Scheduled(cron="${process.scheduler.cron:0 1 0 * * *}",zone="${process.scheduler.zone:Europe/Berlin}") public void run(){LocalDate d=LocalDate.now(ZoneId.of("Europe/Berlin")); log.info("Automatic daily initiation for {}",d); service.execute(InitiationType.SCHEDULED,"SYSTEM",d);} }
