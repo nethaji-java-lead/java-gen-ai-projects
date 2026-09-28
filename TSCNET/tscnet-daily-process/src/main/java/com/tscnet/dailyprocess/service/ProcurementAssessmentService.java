@@ -2,17 +2,14 @@ package com.tscnet.dailyprocess.service;
 
 import com.tscnet.dailyprocess.dto.ProcurementAssessmentDTO;
 import com.tscnet.dailyprocess.dto.ProcurementOfferDTO;
-import com.tscnet.dailyprocess.event.ProcurementAssessmentEvent;
 import com.tscnet.dailyprocess.model.AssessmentStatus;
 import com.tscnet.dailyprocess.model.ProcurementAssessmentProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -20,46 +17,36 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Slf4j
 public class ProcurementAssessmentService {
-
-    private static final String TOPIC_PROCUREMENT_NOTIFICATIONS = "procurement-assessment-notifications";
-
     private final ProcurementAssessmentProperties properties;
-    private final KafkaTemplate<String, ProcurementAssessmentEvent> kafkaTemplate;
 
-    public ProcurementAssessmentDTO procurementAssessment(String documentMrid, List<ProcurementOfferDTO> offers) {
+    public ProcurementAssessmentDTO procurementAssessment(String documentMRID, List<ProcurementOfferDTO> offers) {
 
         // 1. Completeness Check
         if (offers == null || offers.isEmpty()) {
             log.warn("Procurement assessment failed: No offers received.");
-            ProcurementAssessmentDTO dto = new ProcurementAssessmentDTO(
+            return new ProcurementAssessmentDTO(
                     BigDecimal.ZERO, BigDecimal.ZERO, false, false, false,
                     AssessmentStatus.REJECT, "No procurement offers received"
             );
-            sendNotificationEvent(documentMrid, dto);
-            return dto;
         }
 
         boolean isCompleted = offers.stream().allMatch(this::isComplete);
         if (!isCompleted) {
             log.warn("Procurement assessment failed: Incomplete offer fields detected.");
-            ProcurementAssessmentDTO dto = new ProcurementAssessmentDTO(
+            return new ProcurementAssessmentDTO(
                     BigDecimal.ZERO, BigDecimal.ZERO, true, false, false,
                     AssessmentStatus.REVIEW, "One or more procurement offers are incomplete"
             );
-            sendNotificationEvent(documentMrid, dto);
-            return dto;
         }
 
         // 2. Minimum Offer Count
         if (offers.size() < properties.minimumOffers()) {
             log.warn("Procurement assessment failed: Offer count {} is below minimum {}",
                     offers.size(), properties.minimumOffers());
-            ProcurementAssessmentDTO dto = new ProcurementAssessmentDTO(
+            return new ProcurementAssessmentDTO(
                     BigDecimal.ZERO, BigDecimal.ZERO, true, false, false,
                     AssessmentStatus.REVIEW, "Minimum number of procurement offers not received"
             );
-            sendNotificationEvent(documentMrid, dto);
-            return dto;
         }
 
         // 3. Quantity Aggregation
@@ -108,31 +95,7 @@ public class ProcurementAssessmentService {
         log.info("Procurement assessment completed. totalQuantity={}, weightedAveragePrice={}, status={}, reason={}",
                 totalQuantity, weightedAveragePrice, status, reason);
 
-        // Send Kafka event to NotificationService
-        sendNotificationEvent(documentMrid, resultDTO);
-
         return resultDTO;
-    }
-
-    private void sendNotificationEvent(String documentMrid, ProcurementAssessmentDTO dto) {
-        ProcurementAssessmentEvent event = new ProcurementAssessmentEvent(
-                documentMrid,
-                dto.totalQuantity(),
-                dto.weightedAveragePrice(),
-                dto.status(),
-                dto.reason(),
-                Instant.now()
-        );
-
-        kafkaTemplate.send(TOPIC_PROCUREMENT_NOTIFICATIONS, documentMrid, event)
-                .whenComplete((result, ex) -> {
-                    if (ex != null) {
-                        log.error("Failed to send Kafka notification event for mRID: {}", documentMrid, ex);
-                    } else {
-                        log.info("Successfully published Kafka notification event for mRID: {} to partition: {}",
-                                documentMrid, result.getRecordMetadata().partition());
-                    }
-                });
     }
 
     private boolean isComplete(ProcurementOfferDTO offer) {

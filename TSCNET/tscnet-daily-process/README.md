@@ -1,182 +1,387 @@
-# TSCNET Daily Process – Spring Boot Demo
+# TSCNET Daily Process
 
-A small Senior Full Stack Developer case-study backend demonstrating:
+A Java 21 Spring Boot application for automated daily XML processing of procurement data. The project validates business days, retrieves XML files from SFTP, evaluates procurement offers, persists accepted data, and records execution status for auditability.
 
-1. Successful automatic initiation
-2. Failed automatic initiation
-3. Manual initiation after failure
-4. Current/historical execution visibility
-5. Automated tests
-6. Business-day validation
-7. Audit-friendly execution records
-8. Europe/Berlin scheduler configuration
+## Overview
 
-## Technology
+This project models a business-critical daily process that:
+
+- runs on business days only,
+- can be triggered manually or by schedule,
+- validates XML before processing,
+- routes files to archive or error folders,
+- assesses procurement offer quality and thresholds,
+- saves accepted data to persistence storage,
+- publishes Kafka notifications for process status and operator alerts,
+- retains execution history for traceability.
+
+## Features
+
+- Scheduled daily execution with timezone-aware configuration
+- Manual REST-triggered processing
+- Business day check using weekday logic
+- XML validation and parsing
+- Procurement quantity and price assessment
+- SFTP-based file processing
+- Archive/error handling for processed and rejected files
+- Process execution history with status tracking
+- Kafka event publication for operational notifications
+
+## Technology stack
 
 - Java 21
-- Spring Boot 3.5
+- Spring Boot 4.1.1
 - Spring Web
 - Spring Data JPA
-- H2 for the self-contained demo
+- Spring Integration + SFTP
+- Spring Kafka
+- PostgreSQL
 - Maven
-- JUnit 5
+- JUnit 5 / Spring Boot Test
 
-## Run
+## Repository structure
 
-Prerequisites:
-- Java 21+
-- Maven 3.9+
-
-Run tests:
-
-```bash
-mvn test
+```text
+.
+├── Dockerfile
+├── README.md
+├── ReadMe.md
+├── docker-compose.yml
+├── pom.xml
+├── sftp/
+│   ├── archive/
+│   ├── error/
+│   └── upload/
+├── src/
+│   ├── main/java/com/tscnet/dailyprocess/
+│   └── main/resources/
+│       └── application.properties
+└── target/
 ```
 
-Run the application:
+## Prerequisites
+
+Before building or running the project, ensure these tools are available:
+
+- JDK 21 or later
+- Maven 3.9+
+- PostgreSQL 14+
+- Docker + Docker Compose (for local Kafka and SFTP infrastructure)
+
+## Configuration
+
+Application settings are in:
+
+```text
+src/main/resources/application.properties
+```
+
+Current values in the codebase include:
+
+```properties
+server.port=8081
+spring.datasource.url=jdbc:postgresql://localhost:5433/tscnet_daily_process
+spring.datasource.username=postgres
+spring.datasource.password=... 
+spring.jpa.hibernate.ddl-auto=create
+app.scheduler.cron=0 1 0 * * *
+app.scheduler.enabled=true
+app.scheduler.zone=Europe/Munich
+sftp.host=localhost
+sftp.port=2222
+sftp.user=testuser
+sftp.password=...
+spring.kafka.bootstrap-servers=localhost:9092
+```
+
+Update the database, SFTP, and Kafka values to match your local or target environment before running the application.
+
+## Build instructions
+
+From the project root, build the application package:
+
+```bash
+mvn clean package
+```
+
+This creates the runnable artifact:
+
+```text
+target/daily-process-0.0.1-SNAPSHOT.jar
+```
+
+## Run locally
+
+### 1) Start required infrastructure
+
+You can start the SFTP and Kafka services defined in Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+This starts the services declared in `docker-compose.yml`:
+
+- SFTP at `localhost:2222`
+- Kafka at `localhost:9092`
+
+### 2) Start PostgreSQL
+
+Make sure PostgreSQL is running and the database exists:
+
+```text
+tscnet_daily_process
+```
+
+### 3) Launch the Spring Boot app
+
+Run with Maven:
 
 ```bash
 mvn spring-boot:run
 ```
 
-Application:
+Or run the packaged jar:
+
+```bash
+java -jar target/daily-process-0.0.1-SNAPSHOT.jar
+```
+
+The application starts on:
 
 ```text
-http://localhost:8080
+http://localhost:8081
 ```
 
-H2 console:
+## Docker Compose setup
+
+The included `docker-compose.yml` defines:
+
+### SFTP service
+
+```yaml
+services:
+  sftp:
+    image: atmoz/sftp:latest
+    ports:
+      - "2222:22"
+    volumes:
+      - ./sftp/upload:/home/testuser/filesToProcess
+      - ./sftp/archive:/home/testuser/archive
+      - ./sftp/error:/home/testuser/error
+    command: testuser:testpass:1001
+```
+
+Credentials:
+
+- username: `testuser`
+- password: `testpass`
+- port: `2222`
+
+### Kafka service
+
+```yaml
+services:
+  kafka:
+    image: apache/kafka:3.7.0
+    ports:
+      - "9092:9092"
+```
+
+## SFTP and file layout
+
+The application expects the following SFTP directories:
+
+- `filesToProcess` for inbound XML files
+- `archive` for successfully processed XML files
+- `error` for invalid or rejected XML files
+
+The local Docker mapping is:
 
 ```text
-http://localhost:8080/h2-console
+./sftp/filesToProcess  -> /home/testuser/filesToProcess
+./sftp/archive -> /home/testuser/archive
+./sftp/error   -> /home/testuser/error
 ```
 
-JDBC URL:
+## Scheduling
 
-```text
-jdbc:h2:file:./data/tscnetdb
-```
-
-User: `sa`
-Password: empty
-
-## REST API
-
-### 1. Successful automatic initiation
-
-Use a weekday:
-
-```bash
-curl -X POST "http://localhost:8080/api/process/automatic?businessDate=2026-09-25&simulateFailure=false"
-```
-
-Expected status:
-
-```json
-"status": "SUCCESS"
-```
-
-### 2. Failed automatic initiation
-
-```bash
-curl -X POST "http://localhost:8080/api/process/automatic?businessDate=2026-09-28&simulateFailure=true"
-```
-
-Expected:
-
-```json
-"status": "FAILED"
-```
-
-The application logs an operator alert.
-
-### 3. Manual initiation after failure
-
-```bash
-curl -X POST "http://localhost:8080/api/process/manual?businessDate=2026-09-28&operator=operator-1&simulateFailure=false"
-```
-
-Expected:
-
-```json
-"status": "SUCCESS"
-```
-
-The failed automatic attempt is retained. The successful manual recovery is recorded separately.
-
-### 4. View current and historical executions
-
-All:
-
-```bash
-curl "http://localhost:8080/api/process/executions"
-```
-
-For one business date:
-
-```bash
-curl "http://localhost:8080/api/process/executions?businessDate=2026-09-28"
-```
-
-## Demoing the scheduler
-
-Production configuration is:
+The scheduler is configured in `application.properties`:
 
 ```properties
 app.scheduler.cron=0 1 0 * * *
-app.scheduler.zone=Europe/Berlin
+app.scheduler.zone=Europe/Munich
 ```
 
-That means 00:01 Europe/Berlin every day.
+This means the daily process is intended to run at 00:01 every day in the Europe/Munich timezone.
 
-For a live demo, temporarily change the cron to:
+For a quick demonstration, the cron may be temporarily changed to a more frequent interval such as every minute:
 
 ```properties
 app.scheduler.cron=0 * * * * *
 ```
 
-This triggers every minute. Restore the production cron before submission.
+## API endpoints
 
-## Important design decisions
+### Manual trigger
 
-### 1. One initiation service for automatic and manual paths
+```bash
+curl -X POST "http://localhost:8081/api/process/trigger?businessDate=2026-09-25"
+```
 
-The scheduler and REST API both call the same service. This avoids duplicating business rules.
+This starts processing for a specific business date.
 
-### 2. Execution history is append-oriented
+### Failed or partial executions
 
-A failed automatic attempt is never overwritten by a later manual success. This provides an audit trail.
+```bash
+curl "http://localhost:8081/api/process/failed"
+```
 
-### 3. Business date is explicit
+### Latest execution for a date
 
-The business date is stored independently from the execution timestamp.
+```bash
+curl "http://localhost:8081/api/process/latest?businessDate=2026-09-25"
+```
 
-### 4. Business calendar is isolated
+## Processing flow
 
-The demo uses Monday-Friday. Production should use an approved regional holiday calendar.
+1. The app checks whether the requested business date is a weekday.
+2. It retrieves XML files from the SFTP `filesToProcess` folder.
+3. Each XML file is validated.
+4. Valid XML is parsed into procurement offer data.
+5. The `ProcurementAssessmentService` evaluates:
+   - completeness,
+   - minimum offer count,
+   - total quantity threshold,
+   - weighted average price threshold.
+6. Accepted files are persisted and moved to `archive`.
+7. Rejected or invalid files are moved to `error`.
+8. A `ProcessExecutionLog` is saved with success, partial success, or failure status.
+9. Kafka notifications are emitted for operational tracking.
 
-### 5. Notifications are isolated
+## Business-day logic
 
-The demo notification service logs messages. In production it can be replaced by an enterprise notification mechanism without changing the process service.
+The implementation in `DateService` treats the following as non-business days:
 
-### 6. Idempotency
+- Saturday
+- Sunday
 
-The process itself has one record per business date. A unique database constraint prevents multiple process records for the same business date.
+This intentionally keeps the demo simple. A production system should use a formal regional holiday calendar and more complete business calendar rules.
 
-## Production improvements
+## Persistence model
 
-For a production deployment, I would consider:
+The project persists daily process and execution records, including:
 
-- PostgreSQL instead of H2
-- Enterprise identity provider / OAuth2 / OIDC
-- Real notification integration
-- Regional holiday calendar
-- Distributed scheduler locking if multiple application instances are deployed
-- Retry/backoff and dead-letter handling for external dependencies
-- Metrics and alerting
-- Structured audit logs
-- Health checks and observability
-- Integration/contract tests
-- CI/CD pipeline
-- Kubernetes deployment
-- Secrets management
+- `DailyProcess`
+- `ProcessExecutionLog`
+- `ProcessFileLog`
+- `ProcurementAssessment`
+- `ProcurementOffer`
+
+A unique constraint prevents duplicate process entries for the same `business_date`.
+
+## Execution status values
+
+The execution log tracks values such as:
+
+- `IN_PROGRESS`
+- `SUCCESS`
+- `PARTIAL_SUCCESS`
+- `FAILED`
+- `ALREADY_EXECUTED`
+
+## Kafka notifications
+
+The application publishes events to Kafka topics including:
+
+- `procurement-assessment-notifications`
+- `operator-alerts`
+
+The `NotificationService` is responsible for publication and logging success or failure.
+
+## Testing
+
+Run the test suite:
+
+```bash
+mvn test
+```
+
+## Troubleshooting
+
+### Maven not found
+
+If `mvn` is unavailable, install Maven and verify:
+
+```bash
+mvn -v
+```
+
+### PostgreSQL connection errors
+
+Check:
+
+- PostgreSQL is running,
+- the database `tscnet_daily_process` exists,
+- the port and credentials in `application.properties` match your environment.
+
+### SFTP fails to connect
+
+Check:
+
+- Docker Compose is running,
+- port `2222` is open,
+- the SFTP username/password matches `testuser/testpass`.
+
+### Kafka fails to connect
+
+Ensure Kafka is started and the application can reach:
+
+```text
+localhost:9092
+```
+
+## Useful commands
+
+Build the jar:
+
+```bash
+mvn clean package
+```
+
+Run the app:
+
+```bash
+mvn spring-boot:run
+```
+
+Start infrastructure:
+
+```bash
+docker compose up -d
+```
+
+Trigger a manual run:
+
+```bash
+curl -X POST "http://localhost:8081/api/process/trigger?businessDate=2026-09-25"
+```
+
+Fetch failed executions:
+
+```bash
+curl "http://localhost:8081/api/process/failed"
+```
+
+## Production hardening considerations
+
+This is a solid demo foundation, but for production you would typically add:
+
+- managed PostgreSQL and secrets management,
+- real identity / IAM integration,
+- more complete holiday calendars,
+- distributed lock handling for multiple app instances,
+- retries / DLQ handling for external dependencies,
+- observability, metrics, and tracing,
+- CI/CD deployment automation,
+- stronger audit logging and alerting.

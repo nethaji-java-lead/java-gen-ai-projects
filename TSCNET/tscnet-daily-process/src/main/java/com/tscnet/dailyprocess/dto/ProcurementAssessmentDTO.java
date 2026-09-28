@@ -1,9 +1,11 @@
 package com.tscnet.dailyprocess.dto;
 
+import com.tscnet.dailyprocess.event.ProcurementAssessmentEvent;
 import com.tscnet.dailyprocess.model.AssessmentStatus;
 import com.tscnet.dailyprocess.model.ProcurementAssessment;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 
 public record ProcurementAssessmentDTO(
         BigDecimal totalQuantity,
@@ -26,5 +28,17 @@ public record ProcurementAssessmentDTO(
                 .reason(this.reason)
                 .fileName(fileName)
                 .build();
+    }
+
+    public ProcurementAssessmentEvent getProcurementAssessmentEvent(String documentMRID)
+    {
+        return new ProcurementAssessmentEvent(
+                documentMRID,
+                this.totalQuantity(),
+                this.weightedAveragePrice(),
+                this.status(),
+                this.reason(),
+                Instant.now()
+        );
     }
 }

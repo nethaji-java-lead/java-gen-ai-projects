@@ -23,8 +23,7 @@ public class ProcurementDataPersistenceService {
     private final ProcurementOfferRepository procurementOfferRepository;
 
     @Transactional
-    public void persistProcessedData(BalancingMarketDocument document,
-                                     List<ProcurementOfferDTO> offers,
+    public void persistProcessedData(List<ProcurementOfferDTO> offers,
                                      ProcurementAssessmentDTO assessment,
                                      String fileName) {
         log.info("Persisting assessment and offers for file: {}", fileName);
