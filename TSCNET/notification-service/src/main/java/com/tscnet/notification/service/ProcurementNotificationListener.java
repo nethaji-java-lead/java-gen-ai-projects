@@ -16,6 +16,7 @@ public class ProcurementNotificationListener {
 
     private final EmailService emailService;
 
+    // Dedicated listener for procurement-assessment-notifications topic
     @KafkaListener(topics = TOPIC_PROCUREMENT_NOTIFICATIONS, groupId = GROUP_ID)
     public void handleProcessExecutionNotificationEvent(ProcessExecutionNotificationEvent event) {
         log.info("Received process execution notification event for Execution ID {}: Status={}, BusinessDate={}, TotalFiles={}, ProcessedFiles={}, FailedFiles={}",
@@ -27,7 +28,6 @@ public class ProcurementNotificationListener {
                 event.failedFilesCount()
         );
 
-        // Dispatch Email with full execution context
         emailService.sendProcessExecutionNotificationEmail(event);
     }
 }

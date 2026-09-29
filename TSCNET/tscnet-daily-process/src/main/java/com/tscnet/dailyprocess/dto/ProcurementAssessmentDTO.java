@@ -6,6 +6,7 @@ import com.tscnet.dailyprocess.model.ProcurementAssessment;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
 
 public record ProcurementAssessmentDTO(
         BigDecimal totalQuantity,
@@ -14,10 +15,11 @@ public record ProcurementAssessmentDTO(
         boolean quantityThresholdMet,
         boolean priceThresholdMet,
         AssessmentStatus status,
-        String reason
+        String reason,
+        LocalDate businessDate
 ) {
 
-    public ProcurementAssessment toProcurementOfferEntity(String fileName) {
+    public ProcurementAssessment toProcurementAssessmentEntity(String fileName) {
         return ProcurementAssessment.builder()
                 .totalQuantity(this.totalQuantity)
                 .weightedAveragePrice((this.weightedAveragePrice))
@@ -27,18 +29,7 @@ public record ProcurementAssessmentDTO(
                 .status(this.status)
                 .reason(this.reason)
                 .fileName(fileName)
+                .businessDate(this.businessDate)
                 .build();
-    }
-
-    public ProcurementAssessmentEvent getProcurementAssessmentEvent(String documentMRID)
-    {
-        return new ProcurementAssessmentEvent(
-                documentMRID,
-                this.totalQuantity(),
-                this.weightedAveragePrice(),
-                this.status(),
-                this.reason(),
-                Instant.now()
-        );
     }
 }

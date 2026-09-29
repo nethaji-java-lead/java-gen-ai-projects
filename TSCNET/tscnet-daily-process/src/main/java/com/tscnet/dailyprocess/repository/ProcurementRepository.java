@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
-public interface ProcurementAssessmentRepository extends JpaRepository<ProcurementAssessment, Long> {
+public interface ProcurementRepository extends JpaRepository<ProcurementAssessment, Long> {
 
+    /**
+     * Find all procurement records for a given business date
+     */
     List<ProcurementAssessment> findByBusinessDate(LocalDate businessDate);
 }

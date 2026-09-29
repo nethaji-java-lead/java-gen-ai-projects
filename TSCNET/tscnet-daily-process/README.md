@@ -37,6 +37,7 @@ This project models a business-critical daily process that:
 - Spring Kafka
 - PostgreSQL
 - Maven
+- Swagger UI / OpenAPI 3 (springdoc-openapi)
 - JUnit 5 / Spring Boot Test
 
 ## Repository structure
@@ -45,13 +46,9 @@ This project models a business-critical daily process that:
 .
 ├── Dockerfile
 ├── README.md
-├── ReadMe.md
+├── UserStory.md
 ├── docker-compose.yml
 ├── pom.xml
-├── sftp/
-│   ├── archive/
-│   ├── error/
-│   └── upload/
 ├── src/
 │   ├── main/java/com/tscnet/dailyprocess/
 │   └── main/resources/
@@ -222,6 +219,12 @@ app.scheduler.cron=0 * * * * *
 ```
 
 ## API endpoints
+
+### Swagger / OpenAPI
+
+With the application running, open the interactive API documentation at [http://localhost:8081/swagger-ui.html](http://localhost:8081/swagger-ui.html). The OpenAPI 3 specification is available as JSON at [http://localhost:8081/v3/api-docs](http://localhost:8081/v3/api-docs).
+
+Swagger UI documents the process management endpoints below and lets you inspect requests and responses or try the APIs interactively.
 
 ### Manual trigger
 

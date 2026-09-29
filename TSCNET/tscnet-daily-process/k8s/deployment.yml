@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: daily-process-app
+  labels:
+    app: daily-process-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: daily-process-app
+  template:
+    metadata:
+      labels:
+        app: daily-process-app
+    spec:
+      containers:
+        - name: daily-process-app
+          # Image tag matching target jar version from Dockerfile: daily-process-0.0.1-SNAPSHOT.jar
+          image: ecr/daily-process:0.0.1-SNAPSHOT
+          imagePullPolicy: IfNotPresent
+          ports:
+            # Matches EXPOSE 8081 from Dockerfile
+            - containerPort: 8081
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "1024Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8081
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8081
+            initialDelaySeconds: 20
+            periodSeconds: 5

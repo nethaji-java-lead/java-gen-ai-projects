@@ -11,9 +11,9 @@ public record ProcessExecutionNotificationEvent(
         LocalDate businessDate,
         InitiationType initiationType,
         ExecutionStatus status,
-        int totalFilesCount,
-        int processedFilesCount,
-        int failedFilesCount,
+        Integer totalFilesCount,
+        Integer processedFilesCount,
+        Integer failedFilesCount,
         String triggeredBy,
         Instant timestamp
 ) {}

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -42,6 +43,9 @@ public class ProcurementAssessment {
 
     @Column(name = "file_name")
     private String fileName;
+
+    @Column(name = "business_date")
+    private LocalDate businessDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

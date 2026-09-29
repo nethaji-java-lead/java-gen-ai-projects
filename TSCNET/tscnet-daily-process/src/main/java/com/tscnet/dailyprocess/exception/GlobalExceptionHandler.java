@@ -3,13 +3,17 @@ package com.tscnet.dailyprocess.exception;
 import jakarta.xml.bind.JAXBException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.MessagingException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestControllerAdvice
 @Slf4j
@@ -41,13 +45,6 @@ public class GlobalExceptionHandler {
                 .body("SFTP File Processing Error: " + e.getMessage());
     }
 
-    @ExceptionHandler(MessagingException.class)
-    public ResponseEntity<String> handleMessagingException(MessagingException e) {
-        log.error("Messaging / Kafka Event error: {}", e.getMessage(), e);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Notification Event Delivery Error: " + e.getMessage());
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception e) {
         log.error("Unhandled process execution exception: {}", e.getMessage(), e);
@@ -60,5 +57,23 @@ public class GlobalExceptionHandler {
         log.error("The provided date is not a valid business day: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("The provided date is not a valid business day: " + e.getMessage());
+    }
+
+    @ExceptionHandler(NoXmlFileException.class)
+    public ResponseEntity<String> handleNoXmlFileException(NoXmlFileException ex) {
+        log.info(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.TEXT_PLAIN).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<String> handleMessagingException(MessagingException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<String> handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }

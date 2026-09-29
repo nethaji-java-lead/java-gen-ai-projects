@@ -1,7 +1,6 @@
 package com.tscnet.dailyprocess.dto;
 
 import com.tscnet.dailyprocess.model.ProcurementOffer;
-import lombok.ToString;
 
 import java.math.BigDecimal;
 
@@ -36,23 +35,5 @@ public record ProcurementOfferDTO(
                 .imbalancePriceCategory(this.imbalancePriceCategory)
                 .fileName(fileName)
                 .build();
-    }
-
-    @Override
-    public String toString() {
-        return "ProcurementOfferDTO{" +
-                "mRID='" + mRID + '\'' +
-                ", businessType='" + businessType + '\'' +
-                ", marketAgreementType='" + marketAgreementType + '\'' +
-                ", originalMarketProductType='" + originalMarketProductType + '\'' +
-                ", psrType='" + psrType + '\'' +
-                ", flowDirection='" + flowDirection + '\'' +
-                ", currencyUnit='" + currencyUnit + '\'' +
-                ", quantityMeasureUnit='" + quantityMeasureUnit + '\'' +
-                ", position=" + position +
-                ", quantity=" + quantity +
-                ", procurementPrice=" + procurementPrice +
-                ", imbalancePriceCategory='" + imbalancePriceCategory + '\'' +
-                '}';
     }
 }
